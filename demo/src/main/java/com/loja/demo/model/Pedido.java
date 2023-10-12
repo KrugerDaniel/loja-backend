@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
+import org.hibernate.validator.constraints.Length;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +24,7 @@ public class Pedido implements Serializable {
     private Integer nr_pedido;
 
     @NotEmpty
+    @Length(max = 192, message = "Atributo DT_EMISSAo deve ter, no máximo, 2 caracteres.")
     private String dt_emissao;
 
     @NotNull

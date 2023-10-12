@@ -2,6 +2,8 @@ package com.loja.demo.model;
 
 import java.io.Serializable;
 
+import org.hibernate.validator.constraints.Length;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,6 +18,7 @@ public class Categoria implements Serializable {
     private Integer cd_categoria;
 
     @NotEmpty
+    @Length(max = 50, message = "Atributo NM_CATEGORIA deve ter, no máximo, 50 caracteres.")
     private String nm_categoria;
 
     public Categoria() {}
