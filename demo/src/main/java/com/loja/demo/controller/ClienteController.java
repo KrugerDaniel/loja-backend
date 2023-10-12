@@ -32,21 +32,21 @@ public class ClienteController extends GeneralController {
 
     @GetMapping()
     public ResponseEntity<List<Cliente>> findAll() {
-        List<Cliente> clientes = clienteRepository.findAll();
+        List<Cliente> clientes = clienteServices.findAll();
 
         return ResponseEntity.ok().body(clientes);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Cliente>> findById(@PathVariable Integer id) {
-        Optional<Cliente> cliente = clienteRepository.findById(id);
+        Optional<Cliente> cliente = clienteServices.findById(id);
 
         return ResponseEntity.ok().body(cliente);
     }
 
     @GetMapping("/name/{name}")
     public ResponseEntity<List<Cliente>> findByName(@PathVariable String name) {
-        List<Cliente> clientes = clienteRepository.findByName(name);
+        List<Cliente> clientes = clienteServices.findByName(name);
 
         return ResponseEntity.ok().body(clientes);
     }

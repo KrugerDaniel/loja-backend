@@ -2,6 +2,8 @@ package com.loja.demo.model;
 
 import java.io.Serializable;
 
+import org.hibernate.validator.constraints.Length;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,12 +19,15 @@ public class Cliente implements Serializable {
     private Integer cd_cliente;
 
     @NotEmpty
+    @Length(max = 50, message = "Atributo NM_CLIENTE deve ter, no máximo, 50 caracteres.")
     private String nm_cliente;
 
     @NotEmpty
+    @Length(max = 15, message = "Atributo NR_TELEFONE deve ter, no máximo, 15 caracteres.")
     private String nr_telefone;
 
     @NotEmpty
+    @Length(max = 50, message = "Atributo DS_EMAIL deve ter, no máximo, 50 caracteres.")
     private String ds_email;
 
     @NotNull

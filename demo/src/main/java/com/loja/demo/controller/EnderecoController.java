@@ -46,6 +46,41 @@ public class EnderecoController extends GeneralController {
         return ResponseEntity.ok().body(endereco);
     }
 
+    @GetMapping("/cliente/{id}")
+    public ResponseEntity<List<Endereco>> findEnderecoByCliente(@PathVariable Integer id) {
+        List<Endereco> enderecos = enderecoRepository.findEnderecoByCliente(id);
+
+        return ResponseEntity.ok().body(enderecos);
+    }
+
+    @GetMapping("/municipio/{id}")
+    public ResponseEntity<List<Endereco>> findEnderecoByMunicipio(@PathVariable Integer id) {
+        List<Endereco> enderecos = enderecoRepository.findEnderecoByMunicipio(id);
+
+        return ResponseEntity.ok().body(enderecos);
+    }
+
+    @GetMapping("/logradouro/{logradouro}")
+    public ResponseEntity<List<Endereco>> findEnderecoByLogradouro(@PathVariable String logradouro) {
+        List<Endereco> enderecos = enderecoRepository.findEnderecoByLogradouro(logradouro);
+
+        return ResponseEntity.ok().body(enderecos);
+    }
+
+    @GetMapping("/cep/{cep}")
+    public ResponseEntity<List<Endereco>> findEnderecoByCEP(@PathVariable String cep) {
+        List<Endereco> enderecos = enderecoRepository.findEnderecoByCEP(cep);
+
+        return ResponseEntity.ok().body(enderecos);
+    }
+
+    @GetMapping("/bairro/{bairro}")
+    public ResponseEntity<List<Endereco>> findEnderecoByBairro(@PathVariable String bairro) {
+        List<Endereco> enderecos = enderecoRepository.findEnderecoByBairro(bairro);
+
+        return ResponseEntity.ok().body(enderecos);
+    }
+
     @PostMapping()
     public ResponseEntity<Endereco> insertEndereco(@Valid @RequestBody Endereco cliente) {
         Endereco newEndereco = enderecoServices.insertEndereco(cliente);
