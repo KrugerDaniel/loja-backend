@@ -1,8 +1,5 @@
 package com.loja.demo.controller;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,136 +14,99 @@ import org.springframework.web.bind.annotation.RestController;
 import com.loja.demo.model.Cliente;
 import com.loja.demo.model.Endereco;
 import com.loja.demo.model.Municipio;
-import com.loja.demo.repository.EnderecoRepository;
 import com.loja.demo.services.EnderecoServices;
 
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/endereco")
-public class EnderecoController extends GeneralController {
-    
-    @Autowired
-    private EnderecoRepository enderecoRepository;
+public class EnderecoController {
 
     @Autowired
     private EnderecoServices enderecoServices;
 
     @GetMapping()
-    public ResponseEntity<List<Endereco>> findAll() {
-        List<Endereco> enderecos = enderecoRepository.findAll();
-
-        return ResponseEntity.ok().body(enderecos);
+    public ResponseEntity<?> findAll() {
+        return enderecoServices.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Endereco>> findById(@PathVariable Integer id) {
-        Optional<Endereco> endereco = enderecoRepository.findById(id);
-
-        return ResponseEntity.ok().body(endereco);
+    public ResponseEntity<?> findById(@PathVariable Integer id) {
+        return enderecoServices.findById(id);
     }
 
     @GetMapping("/cliente/{id}")
-    public ResponseEntity<List<Endereco>> findEnderecoByCliente(@PathVariable Integer id) {
-        List<Endereco> enderecos = enderecoRepository.findEnderecoByCliente(id);
-
-        return ResponseEntity.ok().body(enderecos);
+    public ResponseEntity<?> findEnderecoByCliente(@PathVariable Integer id) {
+        return enderecoServices.findEnderecoByCliente(id);
     }
 
     @GetMapping("/municipio/{id}")
-    public ResponseEntity<List<Endereco>> findEnderecoByMunicipio(@PathVariable Integer id) {
-        List<Endereco> enderecos = enderecoRepository.findEnderecoByMunicipio(id);
-
-        return ResponseEntity.ok().body(enderecos);
+    public ResponseEntity<?> findEnderecoByMunicipio(@PathVariable Integer id) {
+        return enderecoServices.findEnderecoByMunicipio(id);
     }
 
     @GetMapping("/logradouro/{logradouro}")
-    public ResponseEntity<List<Endereco>> findEnderecoByLogradouro(@PathVariable String logradouro) {
-        List<Endereco> enderecos = enderecoRepository.findEnderecoByLogradouro(logradouro);
-
-        return ResponseEntity.ok().body(enderecos);
+    public ResponseEntity<?> findEnderecoByLogradouro(@PathVariable String logradouro) {
+        return enderecoServices.findEnderecoByLogradouro(logradouro);
     }
 
     @GetMapping("/cep/{cep}")
-    public ResponseEntity<List<Endereco>> findEnderecoByCEP(@PathVariable String cep) {
-        List<Endereco> enderecos = enderecoRepository.findEnderecoByCEP(cep);
-
-        return ResponseEntity.ok().body(enderecos);
+    public ResponseEntity<?> findEnderecoByCEP(@PathVariable String cep) {
+        return enderecoServices.findEnderecoByCEP(cep);
     }
 
     @GetMapping("/bairro/{bairro}")
-    public ResponseEntity<List<Endereco>> findEnderecoByBairro(@PathVariable String bairro) {
-        List<Endereco> enderecos = enderecoRepository.findEnderecoByBairro(bairro);
-
-        return ResponseEntity.ok().body(enderecos);
+    public ResponseEntity<?> findEnderecoByBairro(@PathVariable String bairro) {
+        return enderecoServices.findEnderecoByBairro(bairro);
     }
 
     @PostMapping()
-    public ResponseEntity<Endereco> insertEndereco(@Valid @RequestBody Endereco cliente) {
-        Endereco newEndereco = enderecoServices.insertEndereco(cliente);
-            
-        return ResponseEntity.created(this.getUri(newEndereco.getCd_endereco())).body(newEndereco);
+    public ResponseEntity<?> insertEndereco(@Valid @RequestBody Endereco endereco) {
+        return enderecoServices.insertEndereco(endereco);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEndereco(@PathVariable Integer id) {
-        enderecoServices.deleteEndereco(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> deleteEndereco(@PathVariable Integer id) {
+        return enderecoServices.deleteEndereco(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Endereco> updateEndereco(@PathVariable Integer id, @Valid @RequestBody Endereco endereco) {
-        Endereco enderecoUpdated = enderecoServices.updateEndereco(id, endereco);
-
-        return ResponseEntity.created(this.getUri(id)).body(enderecoUpdated);
+    public ResponseEntity<?> updateEndereco(@PathVariable Integer id, @Valid @RequestBody Endereco endereco) {
+        return enderecoServices.updateEndereco(id, endereco);
     }
 
     @PutMapping("/{id}/logradouro/{logradouro}")
-    public ResponseEntity<Endereco> updateEnderecoLogradouro(@PathVariable Integer id, @PathVariable String logradouro) {
-        Endereco enderecoUpdated = enderecoServices.updateEnderecoLogradouro(id, logradouro);
-
-        return ResponseEntity.created(this.getUri(id)).body(enderecoUpdated);
+    public ResponseEntity<?> updateEnderecoLogradouro(@PathVariable Integer id, @PathVariable String logradouro) {
+        return enderecoServices.updateEnderecoLogradouro(id, logradouro);
     }
 
     @PutMapping("/{id}/bairro/{bairro}")
-    public ResponseEntity<Endereco> updateEnderecoBairro(@PathVariable Integer id, @PathVariable String bairro) {
-        Endereco enderecoUpdated = enderecoServices.updateEnderecoBairro(id, bairro);
-
-        return ResponseEntity.created(this.getUri(id)).body(enderecoUpdated);
+    public ResponseEntity<?> updateEnderecoBairro(@PathVariable Integer id, @PathVariable String bairro) {
+        return enderecoServices.updateEnderecoBairro(id, bairro);
     }
 
     @PutMapping("/{id}/cep/{cep}")
-    public ResponseEntity<Endereco> updateEnderecoCEP(@PathVariable Integer id, @PathVariable String cep) {
-        Endereco enderecoUpdated = enderecoServices.updateEnderecoCEP(id, cep);
-
-        return ResponseEntity.created(this.getUri(id)).body(enderecoUpdated);
+    public ResponseEntity<?> updateEnderecoCEP(@PathVariable Integer id, @PathVariable String cep) {
+        return enderecoServices.updateEnderecoCEP(id, cep);
     }
 
     @PutMapping("/{id}/municipio")
-    public ResponseEntity<Endereco> updateEnderecoMunicipio(@PathVariable Integer id, @Valid @RequestBody Municipio municipio) {
-        Endereco enderecoUpdated = enderecoServices.updateEnderecoMunicipio(id, municipio);
-
-        return ResponseEntity.created(this.getUri(id)).body(enderecoUpdated);
+    public ResponseEntity<?> updateEnderecoMunicipio(@PathVariable Integer id, @Valid @RequestBody Municipio municipio) {
+        return enderecoServices.updateEnderecoMunicipio(id, municipio);
     }
 
     @PutMapping("/{id}/cliente")
-    public ResponseEntity<Endereco> updateEnderecoCliente(@PathVariable Integer id, @Valid @RequestBody Cliente cliente) {
-        Endereco enderecoUpdated = enderecoServices.updateEnderecoCliente(id, cliente);
-
-        return ResponseEntity.created(this.getUri(id)).body(enderecoUpdated);
+    public ResponseEntity<?> updateEnderecoCliente(@PathVariable Integer id, @Valid @RequestBody Cliente cliente) {
+        return enderecoServices.updateEnderecoCliente(id, cliente);
     }
 
     @PutMapping("/{id}/municipio/{municipioId}")
-    public ResponseEntity<Endereco> updateEnderecoMunicipioById(@PathVariable Integer id, @PathVariable Integer municipioId) {
-        Endereco enderecoUpdated = enderecoServices.updateEnderecoMunicipioById(id, municipioId);
-
-        return ResponseEntity.created(this.getUri(id)).body(enderecoUpdated);
+    public ResponseEntity<?> updateEnderecoMunicipioById(@PathVariable Integer id, @PathVariable Integer municipioId) {
+        return enderecoServices.updateEnderecoMunicipioById(id, municipioId);
     }
 
     @PutMapping("/{id}/municipio/{clienteId}")
-    public ResponseEntity<Endereco> updateEnderecoClienteById(@PathVariable Integer id, @PathVariable Integer clienteId) {
-        Endereco enderecoUpdated = enderecoServices.updateEnderecoClienteById(id, clienteId);
-
-        return ResponseEntity.created(this.getUri(id)).body(enderecoUpdated);
+    public ResponseEntity<?> updateEnderecoClienteById(@PathVariable Integer id, @PathVariable Integer clienteId) {
+        return enderecoServices.updateEnderecoClienteById(id, clienteId);
     }
 }
