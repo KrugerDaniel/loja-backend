@@ -1,8 +1,5 @@
 package com.loja.demo.controller;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,94 +12,69 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.loja.demo.model.Cliente;
-import com.loja.demo.repository.ClienteRepository;
 import com.loja.demo.services.ClienteServices;
 
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/cliente")
-public class ClienteController extends GeneralController {
-    
-    @Autowired
-    private ClienteRepository clienteRepository;
+public class ClienteController {
 
     @Autowired
     private ClienteServices clienteServices;
 
     @GetMapping()
-    public ResponseEntity<List<Cliente>> findAll() {
-        List<Cliente> clientes = clienteServices.findAll();
-
-        return ResponseEntity.ok().body(clientes);
+    public ResponseEntity<?> findAll() {
+        return clienteServices.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Cliente>> findById(@PathVariable Integer id) {
-        Optional<Cliente> cliente = clienteServices.findById(id);
-
-        return ResponseEntity.ok().body(cliente);
+    public ResponseEntity<?> findById(@PathVariable Integer id) {
+        return clienteServices.findById(id);
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<List<Cliente>> findByName(@PathVariable String name) {
-        List<Cliente> clientes = clienteServices.findByName(name);
-
-        return ResponseEntity.ok().body(clientes);
+    public ResponseEntity<?> findByName(@PathVariable String name) {
+        return clienteServices.findByName(name);
     }
 
     @GetMapping("/e-mail/{email}")
-    public ResponseEntity<List<Cliente>> findByEmail(@PathVariable String email) {
-        List<Cliente> clientes = clienteRepository.findByEmail(email);
-
-        return ResponseEntity.ok().body(clientes);
+    public ResponseEntity<?> findByEmail(@PathVariable String email) {
+        return clienteServices.findByEmail(email);
     }
 
     @PostMapping()
-    public ResponseEntity<Cliente> insertCliente(@Valid @RequestBody Cliente cliente) {
-        Cliente newCliente = clienteServices.insertCliente(cliente);
-            
-        return ResponseEntity.created(this.getUri(newCliente.getCd_cliente())).body(newCliente);
+    public ResponseEntity<?> insertCliente(@Valid @RequestBody Cliente cliente) {
+        return clienteServices.insertCliente(cliente);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCliente(@PathVariable Integer id) {
-        clienteServices.deleteCliente(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> deleteCliente(@PathVariable Integer id) {
+        return clienteServices.deleteCliente(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cliente> updateCliente(@PathVariable Integer id, @Valid @RequestBody Cliente cliente) {
-        Cliente clienteUpdated = clienteServices.updateCliente(id, cliente);
-            
-        return ResponseEntity.created(this.getUri(id)).body(clienteUpdated);
+    public ResponseEntity<?> updateCliente(@PathVariable Integer id, @Valid @RequestBody Cliente cliente) {
+        return clienteServices.updateCliente(id, cliente);
     }
 
     @PutMapping("/{id}/name/{name}")
-    public ResponseEntity<Cliente> updateClienteName(@PathVariable Integer id, @PathVariable String name) {
-        Cliente clienteUpdated = clienteServices.updateClienteName(id, name);
-
-        return ResponseEntity.created(this.getUri(id)).body(clienteUpdated);
+    public ResponseEntity<?> updateClienteName(@PathVariable Integer id, @PathVariable String name) {
+        return clienteServices.updateClienteName(id, name);
     }
 
     @PutMapping("/{id}/telefone/{telefone}")
-    public ResponseEntity<Cliente> updateClienteTelefone(@PathVariable Integer id, @PathVariable String telefone) {
-        Cliente clienteUpdated = clienteServices.updateClienteTelefone(id, telefone);
-
-        return ResponseEntity.created(this.getUri(id)).body(clienteUpdated);
+    public ResponseEntity<?> updateClienteTelefone(@PathVariable Integer id, @PathVariable String telefone) {
+        return clienteServices.updateClienteTelefone(id, telefone);
     }
 
     @PutMapping("/{id}/e-mail/{email}")
-    public ResponseEntity<Cliente> updateClienteEmail(@PathVariable Integer id, @PathVariable String email) {
-        Cliente clienteUpdated = clienteServices.updateClienteEmail(id, email);
-
-        return ResponseEntity.created(this.getUri(id)).body(clienteUpdated);
+    public ResponseEntity<?> updateClienteEmail(@PathVariable Integer id, @PathVariable String email) {
+        return clienteServices.updateClienteEmail(id, email);
     }
 
     @PutMapping("/{id}/limite-credito/{limite}")
-    public ResponseEntity<Cliente> updateClienteLimite(@PathVariable Integer id, @PathVariable Double limite) {
-        Cliente clienteUpdated = clienteServices.updateClienteLimite(id, limite);
-
-        return ResponseEntity.created(this.getUri(id)).body(clienteUpdated);
+    public ResponseEntity<?> updateClienteLimite(@PathVariable Integer id, @PathVariable Double limite) {
+        return clienteServices.updateClienteLimite(id, limite);
     }
 }
