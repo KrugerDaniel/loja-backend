@@ -1,4 +1,4 @@
-package enums;
+package com.loja.demo.enums;
 
 public enum HttpStatusCode {
     OK(200, "OK"),
