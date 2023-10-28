@@ -1,11 +1,7 @@
 package com.loja.demo.model;
 
 import java.io.Serializable;
-import java.time.DateTimeException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
-import org.hibernate.validator.constraints.Length;
+import java.util.Date;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,6 +9,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -24,8 +22,8 @@ public class Pedido implements Serializable {
     private Integer nr_pedido;
 
     @NotEmpty
-    @Length(max = 192, message = "Atributo DT_EMISSAo deve ter, no máximo, 2 caracteres.")
-    private String dt_emissao;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dt_emissao;
 
     @NotNull
     private Double vl_total;
@@ -36,7 +34,7 @@ public class Pedido implements Serializable {
 
     public Pedido() {}
 
-    public Pedido(Integer nr_pedido, @NotEmpty String dt_emissao, @NotNull Double vl_total, Cliente cliente) {
+    public Pedido(Integer nr_pedido, @NotEmpty Date dt_emissao, @NotNull Double vl_total, Cliente cliente) {
         this.setNr_pedido(nr_pedido);
         this.setDt_emissao(dt_emissao);
         this.setVl_total(vl_total);
@@ -51,21 +49,12 @@ public class Pedido implements Serializable {
         this.nr_pedido = nr_pedido;
     }
 
-    public String getDt_emissao() {
+    public Date getDt_emissao() {
         return dt_emissao;
     }
 
-    public void setDt_emissao(String dt_emissao) {
-        DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate date;
-
-        try {
-            date = LocalDate.parse(dt_emissao, formatador);
-        } catch (DateTimeException exception) {
-            throw new DateTimeException("Data fora do padrão (dd/mm/yyyy)");
-        }
-        
-        this.dt_emissao = date.toString();
+    public void setDt_emissao(Date dt_emissao) {
+        this.dt_emissao = dt_emissao;
     }
 
     public Double getVl_total() {
