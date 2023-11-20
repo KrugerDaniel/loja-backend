@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -27,6 +29,10 @@ public class Produto implements Serializable {
 
     @NotNull
     private Double vl_produto;
+
+    @ManyToOne
+    @JoinColumn(name = "cd_categoria")
+    private Categoria categoria;
 
     public Produto() {}
 
@@ -72,5 +78,13 @@ public class Produto implements Serializable {
         }
         
         this.vl_produto = vl_produto;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 }

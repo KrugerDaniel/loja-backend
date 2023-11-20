@@ -198,7 +198,7 @@ public class ClienteServices extends GeneralService {
         }
     }
 
-    private Cliente findCliente(Integer id) {
+    public Cliente findCliente(Integer id) {
         return clienteRepository.findById(id)
             .orElseThrow(
                 () -> new ObjectNotFoundException("Cliente " + id + " não encontrado")
