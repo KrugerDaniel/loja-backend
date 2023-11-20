@@ -108,7 +108,7 @@ public class CategoriaServices extends GeneralService {
         }
     }
 
-    private Categoria findCategoria(Integer id) {
+    public Categoria findCategoria(Integer id) {
         return categoriaRepository.findById(id)
             .orElseThrow(
                 () -> new ObjectNotFoundException("Categoria " + id + " não encontrada!")

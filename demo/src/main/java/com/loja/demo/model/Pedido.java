@@ -11,7 +11,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -21,7 +20,7 @@ public class Pedido implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer nr_pedido;
 
-    @NotEmpty
+    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date dt_emissao;
 
@@ -34,7 +33,7 @@ public class Pedido implements Serializable {
 
     public Pedido() {}
 
-    public Pedido(Integer nr_pedido, @NotEmpty Date dt_emissao, @NotNull Double vl_total, Cliente cliente) {
+    public Pedido(Integer nr_pedido, @NotNull Date dt_emissao, @NotNull Double vl_total, Cliente cliente) {
         this.setNr_pedido(nr_pedido);
         this.setDt_emissao(dt_emissao);
         this.setVl_total(vl_total);
