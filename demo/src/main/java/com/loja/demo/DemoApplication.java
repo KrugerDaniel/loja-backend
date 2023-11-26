@@ -7,12 +7,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import com.loja.demo.model.Categoria;
-import com.loja.demo.model.Cliente;
-import com.loja.demo.model.Pedido;
-import com.loja.demo.repository.CategoriaRepository;
-import com.loja.demo.repository.ClienteRepository;
-import com.loja.demo.repository.PedidoRepository;
+import com.loja.demo.model.entity.categoria.Categoria;
+import com.loja.demo.model.entity.cliente.Cliente;
+import com.loja.demo.model.entity.pedido.Pedido;
+import com.loja.demo.model.entity.produto.Produto;
+import com.loja.demo.repository.categoria.CategoriaRepository;
+import com.loja.demo.repository.cliente.ClienteRepository;
+import com.loja.demo.repository.pedido.PedidoRepository;
+import com.loja.demo.repository.produto.ProdutoRepository;
 
 @SpringBootApplication
 public class DemoApplication {
@@ -25,7 +27,8 @@ public class DemoApplication {
 	public CommandLineRunner demo(
 		CategoriaRepository catRep,
 		ClienteRepository clRep,
-		PedidoRepository pRepository) {
+		PedidoRepository pRepository,
+		ProdutoRepository produtoRepository) {
 		return (args) -> {
 			catRep.save(new Categoria(null, "Banana"));
 			catRep.save(new Categoria(null, "Maçã"));
@@ -37,6 +40,14 @@ public class DemoApplication {
 			Date data = new Date(20023, 12, 12);
 			Pedido pedido = new Pedido(1, data, 12.5, null);
 			pRepository.save(pedido);
+
+			Produto produto = new Produto(null, "sabonete", 100, 12.0);
+			Produto produto2 = new Produto(null, "Banana", 20, 5.0);
+			Produto produto3 = new Produto(null, "juliete", 5, 50.5);
+
+			produtoRepository.save(produto);
+			produtoRepository.save(produto2);
+			produtoRepository.save(produto3);
 		};
 	}
 }
