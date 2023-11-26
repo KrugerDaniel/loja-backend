@@ -132,7 +132,7 @@ public class ProdutoServices extends GeneralService {
         });
     }
 
-    private Produto findPedido(Integer id) {
+    public Produto findPedido(Integer id) {
         return produtoRepository.findById(id)
             .orElseThrow(
                 () -> new ObjectNotFoundException("Produto " + id + " não encontrado!")

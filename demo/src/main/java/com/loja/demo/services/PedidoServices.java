@@ -181,7 +181,7 @@ public class PedidoServices extends GeneralService {
         }
     }
 
-    private Pedido findPedido(Integer id) {
+    public Pedido findPedido(Integer id) {
         return pedidoRepository.findById(id)
             .orElseThrow(
                 () -> new ObjectNotFoundException("Pedido " + id + " não encontrado!")
