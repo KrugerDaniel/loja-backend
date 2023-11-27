@@ -1,4 +1,4 @@
-package com.loja.demo.services;
+package com.loja.demo.services.itempedido;
 
 import java.net.URI;
 import java.util.List;
@@ -17,6 +17,9 @@ import com.loja.demo.model.entity.itempedido.ItemPedidoID;
 import com.loja.demo.model.entity.pedido.Pedido;
 import com.loja.demo.model.entity.produto.Produto;
 import com.loja.demo.repository.itempedido.ItemPedidoRepository;
+import com.loja.demo.services.GeneralService;
+import com.loja.demo.services.pedido.PedidoServices;
+import com.loja.demo.services.produto.ProdutoServices;
 
 import jakarta.transaction.Transactional;
 

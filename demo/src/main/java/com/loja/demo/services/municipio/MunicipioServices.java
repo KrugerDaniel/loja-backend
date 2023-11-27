@@ -1,4 +1,4 @@
-package com.loja.demo.services;
+package com.loja.demo.services.municipio;
 
 import java.util.List;
 
@@ -10,6 +10,7 @@ import com.loja.demo.enums.HttpStatusCode;
 import com.loja.demo.exceptions.ObjectNotFoundException;
 import com.loja.demo.model.entity.municipio.Municipio;
 import com.loja.demo.repository.municipio.MunicipioRepository;
+import com.loja.demo.services.GeneralService;
 
 @Service
 public class MunicipioServices extends GeneralService {

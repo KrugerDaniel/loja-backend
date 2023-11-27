@@ -1,4 +1,4 @@
-package com.loja.demo.services;
+package com.loja.demo.services.pedido;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,6 +16,8 @@ import com.loja.demo.exceptions.ObjectNotFoundException;
 import com.loja.demo.model.entity.cliente.Cliente;
 import com.loja.demo.model.entity.pedido.Pedido;
 import com.loja.demo.repository.pedido.PedidoRepository;
+import com.loja.demo.services.GeneralService;
+import com.loja.demo.services.cliente.ClienteServices;
 
 @Service
 public class PedidoServices extends GeneralService {

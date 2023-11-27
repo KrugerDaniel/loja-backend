@@ -1,4 +1,4 @@
-package com.loja.demo.services;
+package com.loja.demo.services.categoria;
 
 import java.util.List;
 
@@ -10,6 +10,7 @@ import com.loja.demo.enums.HttpStatusCode;
 import com.loja.demo.exceptions.ObjectNotFoundException;
 import com.loja.demo.model.entity.categoria.Categoria;
 import com.loja.demo.repository.categoria.CategoriaRepository;
+import com.loja.demo.services.GeneralService;
 
 @Service
 public class CategoriaServices extends GeneralService {

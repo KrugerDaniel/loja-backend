@@ -1,4 +1,4 @@
-package com.loja.demo.services;
+package com.loja.demo.services.produto;
 
 import java.util.List;
 import java.util.Map;
@@ -12,6 +12,8 @@ import com.loja.demo.exceptions.ObjectNotFoundException;
 import com.loja.demo.model.entity.categoria.Categoria;
 import com.loja.demo.model.entity.produto.Produto;
 import com.loja.demo.repository.produto.ProdutoRepository;
+import com.loja.demo.services.GeneralService;
+import com.loja.demo.services.categoria.CategoriaServices;
 
 @Service
 public class ProdutoServices extends GeneralService {

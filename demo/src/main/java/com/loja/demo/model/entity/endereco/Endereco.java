@@ -37,7 +37,7 @@ public class Endereco implements Serializable {
 
     @NotEmpty
     @Length(max = 8, message = "Atributo NR_CEP deve ter, no máximo, 8 caracteres.")
-    private  String nr_cep;
+    private String nr_cep;
 
     @ManyToOne
     @JoinColumn(name = "cd_municipio")

@@ -1,4 +1,4 @@
-package com.loja.demo.services;
+package com.loja.demo.services.endereco;
 
 import java.util.List;
 
@@ -14,6 +14,7 @@ import com.loja.demo.model.entity.endereco.Endereco;
 import com.loja.demo.repository.cliente.ClienteRepository;
 import com.loja.demo.repository.endereco.EnderecoRepository;
 import com.loja.demo.repository.municipio.MunicipioRepository;
+import com.loja.demo.services.GeneralService;
 
 @Service
 public class EnderecoServices extends GeneralService {

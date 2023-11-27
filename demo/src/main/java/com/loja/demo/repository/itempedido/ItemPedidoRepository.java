@@ -12,13 +12,13 @@ import com.loja.demo.model.entity.itempedido.ItemPedidoID;
 public interface ItemPedidoRepository extends JpaRepository<ItemPedido, ItemPedidoID> {
 
     @Query("SELECT item " +
-           "FROM ItemPedito item " +
+           "FROM ItemPedido item " +
            "WHERE item.id.produto.cd_produto = :idProduto " +
            "ORDER BY item.id.produto.cd_produto")
     List<ItemPedido> findByProduto(@Param(value = "idProduto") Integer idProduto);
 
     @Query("SELECT item " +
-           "FROM ItemPedito item " +
+           "FROM ItemPedido item " +
            "WHERE item.id.pedido.nr_pedido = :idPedido " +
            "ORDER BY item.id.pedido.nr_pedido")
     List<ItemPedido> findByPedido(@Param(value = "idPedido") Integer idPedido);
