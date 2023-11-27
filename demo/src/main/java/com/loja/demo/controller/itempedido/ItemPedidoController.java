@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.loja.demo.controller.GeneralController;
-import com.loja.demo.services.ItemPedidoServices;
+import com.loja.demo.services.itempedido.ItemPedidoServices;
 
 import jakarta.validation.Valid;
 
