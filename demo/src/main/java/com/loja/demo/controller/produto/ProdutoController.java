@@ -33,12 +33,7 @@ public class ProdutoController {
     public ResponseEntity<?> findById(@PathVariable Integer id) {
         return produtoServices.findById(id);
     }
-
-    @GetMapping("/name/{name}")
-    public ResponseEntity<?> findByName(@PathVariable String name) {
-        return produtoServices.findByName(name);
-    }
-
+    
     @PostMapping()
     public ResponseEntity<?> insertProduto(@RequestBody Map<String, Object> produto) {
         return produtoServices.insertProduto(produto);

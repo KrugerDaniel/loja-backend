@@ -1,6 +1,7 @@
 package com.loja.demo.services.categoria;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -47,22 +48,6 @@ public class CategoriaServices extends GeneralService {
         }
     }
 
-    public ResponseEntity<?> findCategoriaByName(String name) {
-        try {
-            List<Categoria> categorias = categoriaRepository.findByName(name);
-
-            if (categorias.isEmpty()) {
-                throw new ObjectNotFoundException("Categoria " + name + " não encontrado!");
-            }
-            return ResponseEntity.status(HttpStatusCode.OK.getCode()).body(categorias);
-        } catch (ObjectNotFoundException notFound) {
-            return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
-        }
-    }
-
     public ResponseEntity<?> insertCategoria(Categoria categoria) {
         try {
             categoria.setCd_categoria(null);
@@ -90,11 +75,17 @@ public class CategoriaServices extends GeneralService {
         }
     }
 
-    public ResponseEntity<?> updateCategoria(Integer id, Categoria categoria) {
+    public ResponseEntity<?> updateCategoria(Integer id, Map<String, Object> categoria) {
         try {
             Categoria categoriaUpdated = this.findCategoria(id);
 
-            categoriaUpdated.setNm_categoria(categoria.getNm_categoria());
+            categoria.forEach((campo, valor) -> {
+                switch (campo) {
+                    case "nm_categoria":
+                        categoriaUpdated.setNm_categoria((String) valor);
+                        break;
+                }
+            });
 
             categoriaRepository.save(categoriaUpdated);
 

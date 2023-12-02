@@ -1,5 +1,7 @@
 package com.loja.demo.controller.categoria;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,7 +21,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/categoria")
-public class CategoriaController extends GeneralController implements CategoriaApi {
+public class CategoriaController extends GeneralController {
 
     @Autowired
     private CategoriaServices categoriaServices;
@@ -34,11 +36,6 @@ public class CategoriaController extends GeneralController implements CategoriaA
         return categoriaServices.findById(id);
     }
 
-    @GetMapping("/name/{name}")
-    public ResponseEntity<?> findCategoriaByName(@PathVariable String name) {
-        return categoriaServices.findCategoriaByName(name);
-    }
-
     @PostMapping()
     public ResponseEntity<?> insertCategoria(@Valid @RequestBody Categoria categoria) {
         return categoriaServices.insertCategoria(categoria);
@@ -50,7 +47,7 @@ public class CategoriaController extends GeneralController implements CategoriaA
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCategoria(@PathVariable Integer id, @Valid @RequestBody Categoria categoria) {
+    public ResponseEntity<?> updateCategoria(@PathVariable Integer id, @Valid @RequestBody Map<String, Object> categoria) {
         return categoriaServices.updateCategoria(id, categoria);
     }
 }

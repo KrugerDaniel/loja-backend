@@ -1,6 +1,7 @@
 package com.loja.demo.services.cliente;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -47,38 +48,6 @@ public class ClienteServices extends GeneralService {
         }
     }
 
-    public ResponseEntity<?> findByName(String name) {
-        try {
-            List<Cliente> clientes = clienteRepository.findByName(name.toLowerCase());
-
-            if (clientes.isEmpty()) {
-                throw new ObjectNotFoundException("Não encontrados clientes com o nome: " + name);
-            }
-            return ResponseEntity.status(HttpStatusCode.OK.getCode()).body(clientes);
-        } catch (ObjectNotFoundException notFound) {
-            return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
-        }
-    }
-
-    public ResponseEntity<?> findByEmail(String email) {
-        try {
-            List<Cliente> clientes = clienteRepository.findByEmail(email.toLowerCase());
-
-            if (clientes.isEmpty()) {
-                throw new ObjectNotFoundException("Não encontrado clientes com o e-mail: " + email);
-            }
-            return ResponseEntity.status(HttpStatusCode.OK.getCode()).body(clientes);
-        } catch (ObjectNotFoundException notFound) {
-            return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
-        }
-    }
-
     public ResponseEntity<?> insertCliente(Cliente cliente) {
         try {
             cliente.setCd_cliente(null);
@@ -106,88 +75,28 @@ public class ClienteServices extends GeneralService {
         }
     }
 
-    public ResponseEntity<?> updateCliente(Integer id, Cliente clienteUpdated) {
+    public ResponseEntity<?> updateCliente(Integer id, Map<String, Object> clienteUpdated) {
         try {
-            Cliente cliente = this.findCliente(id);
-                
-            cliente.setNm_cliente(clienteUpdated.getNm_cliente());
-            cliente.setDs_email(clienteUpdated.getDs_email());
-            cliente.setNr_telefone(clienteUpdated.getNr_telefone());
-            cliente.setVl_limite_credito(clienteUpdated.getVl_limite_credito());
+            final Cliente cliente = this.findCliente(id);
 
-            cliente = clienteRepository.save(cliente);
-            return ResponseEntity.status(HttpStatusCode.CREATED.getCode())
-                .headers(this.getHeaders(id))
-                .body(cliente);
-        } catch (ObjectNotFoundException notFound) {
-            return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
-        }
-    }
+            clienteUpdated.forEach((campo, valor) -> {
+                switch (campo) {
+                    case "nm_cliente":
+                        cliente.setNm_cliente((String) valor);
+                        break;
+                    case "nr_telefone":
+                        cliente.setNr_telefone((String) valor);
+                        break;
+                    case "ds_email":
+                        cliente.setDs_email((String) valor);
+                        break;
+                    case "vl_limite_credito":
+                        cliente.setVl_limite_credito((Double) valor);
+                        break;
+                }
+            });
 
-    public ResponseEntity<?> updateClienteName(Integer id, String name) {
-        try {
-            Cliente cliente = this.findCliente(id);
-                
-            cliente.setNm_cliente(name);
-
-            cliente = clienteRepository.save(cliente);
-            return ResponseEntity.status(HttpStatusCode.CREATED.getCode())
-                .headers(this.getHeaders(id))
-                .body(cliente);
-        } catch (ObjectNotFoundException notFound) {
-            return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
-        }
-    }
-
-    public ResponseEntity<?> updateClienteTelefone(Integer id, String telefone) {
-        try {
-            Cliente cliente = this.findCliente(id);
-
-            cliente.setNr_telefone(telefone);
-
-            cliente = clienteRepository.save(cliente);
-            return ResponseEntity.status(HttpStatusCode.CREATED.getCode())
-                .headers(this.getHeaders(id))
-                .body(cliente);
-        } catch (ObjectNotFoundException notFound) {
-            return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
-        }
-    }
-
-    public ResponseEntity<?> updateClienteEmail(Integer id, String email) {
-        try {
-            Cliente cliente = this.findCliente(id);
-
-            cliente.setDs_email(email);
-
-            cliente = clienteRepository.save(cliente);
-            return ResponseEntity.status(HttpStatusCode.CREATED.getCode())
-                .headers(this.getHeaders(id))
-                .body(cliente);
-        } catch (ObjectNotFoundException notFound) {
-            return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
-        }
-    }
-
-    public ResponseEntity<?> updateClienteLimite(Integer id, Double limite) {
-        try {
-            Cliente cliente = this.findCliente(id);
-
-            cliente.setVl_limite_credito(limite);
-
-            cliente = clienteRepository.save(cliente);
+            clienteRepository.save(cliente);
             return ResponseEntity.status(HttpStatusCode.CREATED.getCode())
                 .headers(this.getHeaders(id))
                 .body(cliente);

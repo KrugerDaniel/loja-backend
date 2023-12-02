@@ -1,5 +1,7 @@
 package com.loja.demo.controller.cliente;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,16 +36,6 @@ public class ClienteController extends GeneralController {
         return clienteServices.findById(id);
     }
 
-    @GetMapping("/name/{name}")
-    public ResponseEntity<?> findByName(@PathVariable String name) {
-        return clienteServices.findByName(name);
-    }
-
-    @GetMapping("/e-mail/{email}")
-    public ResponseEntity<?> findByEmail(@PathVariable String email) {
-        return clienteServices.findByEmail(email);
-    }
-
     @PostMapping()
     public ResponseEntity<?> insertCliente(@Valid @RequestBody Cliente cliente) {
         return clienteServices.insertCliente(cliente);
@@ -55,27 +47,7 @@ public class ClienteController extends GeneralController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCliente(@PathVariable Integer id, @Valid @RequestBody Cliente cliente) {
+    public ResponseEntity<?> updateCliente(@PathVariable Integer id, @Valid @RequestBody Map<String, Object> cliente) {
         return clienteServices.updateCliente(id, cliente);
-    }
-
-    @PutMapping("/{id}/name/{name}")
-    public ResponseEntity<?> updateClienteName(@PathVariable Integer id, @PathVariable String name) {
-        return clienteServices.updateClienteName(id, name);
-    }
-
-    @PutMapping("/{id}/telefone/{telefone}")
-    public ResponseEntity<?> updateClienteTelefone(@PathVariable Integer id, @PathVariable String telefone) {
-        return clienteServices.updateClienteTelefone(id, telefone);
-    }
-
-    @PutMapping("/{id}/e-mail/{email}")
-    public ResponseEntity<?> updateClienteEmail(@PathVariable Integer id, @PathVariable String email) {
-        return clienteServices.updateClienteEmail(id, email);
-    }
-
-    @PutMapping("/{id}/limite-credito/{limite}")
-    public ResponseEntity<?> updateClienteLimite(@PathVariable Integer id, @PathVariable Double limite) {
-        return clienteServices.updateClienteLimite(id, limite);
     }
 }
