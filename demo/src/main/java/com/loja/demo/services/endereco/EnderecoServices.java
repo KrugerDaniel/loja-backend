@@ -1,6 +1,7 @@
 package com.loja.demo.services.endereco;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ import com.loja.demo.services.GeneralService;
 
 @Service
 public class EnderecoServices extends GeneralService {
-    
+
     @Autowired
     private EnderecoRepository enderecoRepository;
 
@@ -38,7 +39,7 @@ public class EnderecoServices extends GeneralService {
             return ResponseEntity.status(HttpStatusCode.OK.getCode()).body(enderecos);
         } catch (ObjectNotFoundException notFound) {
             return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
+                    .body(notFound.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
         }
@@ -51,93 +52,40 @@ public class EnderecoServices extends GeneralService {
             return ResponseEntity.status(HttpStatusCode.OK.getCode()).body(endereco);
         } catch (ObjectNotFoundException notFound) {
             return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
+                    .body(notFound.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
         }
     }
 
-    public ResponseEntity<?> findEnderecoByCliente(Integer id) {
+    public ResponseEntity<?> insertEndereco(Map<String, Object> endereco) {
         try {
-            List<Endereco> enderecos = enderecoRepository.findEnderecoByCliente(id);
+            final Endereco newEndereco = new Endereco();
 
-            if (enderecos.isEmpty()) {
-                throw new ObjectNotFoundException("Cliente " + id + " não encontrado!");
-            }
-            return ResponseEntity.status(HttpStatusCode.OK.getCode()).body(enderecos);
-        } catch (ObjectNotFoundException notFound) {
-            return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
-        }
-    }
-
-    public ResponseEntity<?> findEnderecoByMunicipio(Integer id) {
-        try {
-            List<Endereco> enderecos = enderecoRepository.findEnderecoByMunicipio(id);
-
-            if (enderecos.isEmpty()) {
-                throw new ObjectNotFoundException("Município " + id + " não encontrado!");
-            }
-            return ResponseEntity.status(HttpStatusCode.OK.getCode()).body(enderecos);
-        } catch (ObjectNotFoundException notFound) {
-            return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
-        }
-    }
-
-    public ResponseEntity<?> findEnderecoByLogradouro(String logradouro) {
-        try {
-            List<Endereco> enderecos = enderecoRepository.findEnderecoByLogradouro(logradouro);
-            if (enderecos.isEmpty()) {
-                throw new ObjectNotFoundException("Logradouro " + logradouro + " não encontrado!");
-            }
-            return ResponseEntity.status(HttpStatusCode.OK.getCode()).body(enderecos);
-        } catch (ObjectNotFoundException notFound) {
-            return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
-        }
-    }
-
-    public ResponseEntity<?> findEnderecoByCEP(String cep) {
-        try {
-            List<Endereco> enderecos = enderecoRepository.findEnderecoByCEP(cep);
-            if (enderecos.isEmpty()) {
-                throw new ObjectNotFoundException("CEP " + cep + " não encontrado!");
-            }
-            return ResponseEntity.status(HttpStatusCode.OK.getCode()).body(enderecos);
-        } catch (ObjectNotFoundException notFound) {
-            return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
-        }
-    }
-
-    public ResponseEntity<?> findEnderecoByBairro(String bairro) {
-        try {
-            List<Endereco> enderecos = enderecoRepository.findEnderecoByBairro(bairro);
-            if (enderecos.isEmpty()) {
-                throw new ObjectNotFoundException("Bairro " + bairro + " não encontrado!");
-            }
-            return ResponseEntity.status(HttpStatusCode.OK.getCode()).body(enderecos);
-        } catch (ObjectNotFoundException notFound) {
-            return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
-        }
-    }
-
-    public ResponseEntity<?> insertEndereco(Endereco endereco) {
-        try {
-            endereco.setCd_endereco(null);
-            Endereco newEndereco = enderecoRepository.save(endereco);
+            endereco.forEach((campo, valor) -> {
+                switch (campo) {
+                    case "nm_logradouro":
+                        newEndereco.setNm_logradouro((String) valor);
+                        break;
+                    case "ds_complemento":
+                        newEndereco.setDs_complemento((String) valor);
+                        break;
+                    case "nm_bairro":
+                        newEndereco.setNm_bairro((String) valor);
+                        break;
+                    case "nr_cep":
+                        newEndereco.setNr_cep((String) valor);
+                        break;
+                    case "municipio":
+                        newEndereco.setMunicipio(this.getMunicipio((Integer) valor));
+                        break;
+                    case "cliente":
+                        newEndereco.setCliente(this.getCliente((Integer) valor));
+                        break;
+                }
+            });
+            
+            enderecoRepository.save(newEndereco);
 
             return ResponseEntity.status(HttpStatusCode.CREATED.getCode())
                 .headers(this.getHeaders(newEndereco.getCd_endereco()))
@@ -155,161 +103,46 @@ public class EnderecoServices extends GeneralService {
             return ResponseEntity.status(HttpStatusCode.NO_CONTENT.getCode()).build();
         } catch (ObjectNotFoundException notFound) {
             return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
+                    .body(notFound.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
         }
     }
 
-    public ResponseEntity<?> updateEndereco(Integer id, Endereco endereco) {
+    public ResponseEntity<?> updateEndereco(Integer id, Map<String, Object> endereco) {
         try {
-            Endereco newEndereco = this.findEndereco(id);
+            final Endereco newEndereco = this.findEndereco(id);
 
-            this.getMunicipio(endereco.getMunicipio().getCd_municipio());
-            this.getCliente(endereco.getCliente().getCd_cliente());
+            endereco.forEach((campo, valor) -> {
+                switch (campo) {
+                    case "nm_logradouro":
+                        newEndereco.setNm_logradouro((String) valor);
+                        break;
+                    case "ds_complemento":
+                        newEndereco.setDs_complemento((String) valor);
+                        break;
+                    case "nm_bairro":
+                        newEndereco.setNm_bairro((String) valor);
+                        break;
+                    case "nr_cep":
+                        newEndereco.setNr_cep((String) valor);
+                        break;
+                    case "municipio":
+                        newEndereco.setMunicipio(this.getMunicipio((Integer) valor));
+                        break;
+                    case "cliente":
+                        newEndereco.setCliente(this.getCliente((Integer) valor));
+                        break;
+                }
+            });
 
-            newEndereco.setNm_logradouro(endereco.getNm_logradouro());
-            newEndereco.setDs_complemento(endereco.getDs_complemento());
-            newEndereco.setNm_bairro(endereco.getNm_bairro());
-            newEndereco.setNr_cep(endereco.getNr_cep());
-            newEndereco.setMunicipio(endereco.getMunicipio());
-            newEndereco.setCliente(endereco.getCliente());
-
-            newEndereco = enderecoRepository.save(newEndereco);
+            enderecoRepository.save(newEndereco);
             return ResponseEntity.status(HttpStatusCode.CREATED.getCode())
-                .headers(this.getHeaders(id))
-                .body(newEndereco);
+                    .headers(this.getHeaders(id))
+                    .body(newEndereco);
         } catch (ObjectNotFoundException notFound) {
             return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
-        }
-    }
-
-    public ResponseEntity<?> updateEnderecoLogradouro(Integer id, String logradouro) {
-        try {
-            Endereco newEndereco = this.findEndereco(id);
-
-            newEndereco.setNm_logradouro(logradouro);
-
-            newEndereco = enderecoRepository.save(newEndereco);
-            return ResponseEntity.status(HttpStatusCode.CREATED.getCode())
-                .headers(this.getHeaders(id))
-                .body(newEndereco);
-        } catch (ObjectNotFoundException notFound) {
-            return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
-        }
-    }
-
-    public ResponseEntity<?> updateEnderecoBairro(Integer id, String bairro) {
-        try {
-            Endereco newEndereco = this.findEndereco(id);
-
-            newEndereco.setNm_logradouro(bairro);
-
-            newEndereco = enderecoRepository.save(newEndereco);
-            return ResponseEntity.status(HttpStatusCode.CREATED.getCode())
-                .headers(this.getHeaders(id))
-                .body(newEndereco);
-        } catch (ObjectNotFoundException notFound) {
-            return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
-        }
-    }
-
-    public ResponseEntity<?> updateEnderecoCEP(Integer id, String cep) {
-        try {
-            Endereco newEndereco = this.findEndereco(id);
-
-            newEndereco.setNm_logradouro(cep);
-
-            newEndereco = enderecoRepository.save(newEndereco);
-            return ResponseEntity.status(HttpStatusCode.CREATED.getCode())
-                .headers(this.getHeaders(id))
-                .body(newEndereco);
-        } catch (ObjectNotFoundException notFound) {
-            return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
-        }
-    }
-
-	public ResponseEntity<?> updateEnderecoMunicipio(Integer id, Municipio municipio) {
-        try {
-            Endereco endereco = this.findEndereco(id);
-
-            endereco.setMunicipio(municipio);
-
-            endereco = enderecoRepository.save(endereco);
-            return ResponseEntity.status(HttpStatusCode.CREATED.getCode())
-                .headers(this.getHeaders(id))
-                .body(endereco);
-        } catch (ObjectNotFoundException notFound) {
-            return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
-        }
-	}
-
-    public ResponseEntity<?> updateEnderecoCliente(Integer id, Cliente cliente) {
-        try {
-            Endereco endereco = this.findEndereco(id);
-
-            endereco.setCliente(cliente);
-
-            endereco = enderecoRepository.save(endereco);
-            return ResponseEntity.status(HttpStatusCode.CREATED.getCode())
-                .headers(this.getHeaders(id))
-                .body(endereco);
-        } catch (ObjectNotFoundException notFound) {
-            return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
-        }
-    }
-
-    public ResponseEntity<?> updateEnderecoMunicipioById(Integer id, Integer municipioId) {
-        try {
-            Municipio municipio = this.getMunicipio(municipioId);
-            Endereco endereco = this.findEndereco(id);
-
-            endereco.setMunicipio(municipio);
-
-            endereco = enderecoRepository.save(endereco);
-            return ResponseEntity.status(HttpStatusCode.CREATED.getCode())
-                .headers(this.getHeaders(id))
-                .body(endereco);
-        } catch (ObjectNotFoundException notFound) {
-            return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
-        }
-    }
-
-    public ResponseEntity<?> updateEnderecoClienteById(Integer id, Integer clienteId) {
-        try {
-            Cliente cliente = this.getCliente(clienteId);
-            Endereco endereco = this.findEndereco(id);
-
-            endereco.setCliente(cliente);
-
-            endereco = enderecoRepository.save(endereco);
-            return ResponseEntity.status(HttpStatusCode.CREATED.getCode())
-                .headers(this.getHeaders(id))
-                .body(endereco);
-        } catch (ObjectNotFoundException notFound) {
-            return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
+                    .body(notFound.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
         }
@@ -317,22 +150,19 @@ public class EnderecoServices extends GeneralService {
 
     private Endereco findEndereco(Integer id) {
         return enderecoRepository.findById(id)
-            .orElseThrow(
-                () -> new ObjectNotFoundException("Endereço " + id + " não encontrado")
-            );
+                .orElseThrow(
+                        () -> new ObjectNotFoundException("Endereço " + id + " não encontrado"));
     }
 
     private Municipio getMunicipio(Integer id) {
         return municipioRepository.findById(id)
-            .orElseThrow(
-                () -> new ObjectNotFoundException("Município " + id + " não encontrado!")
-            );
+                .orElseThrow(
+                        () -> new ObjectNotFoundException("Município " + id + " não encontrado!"));
     }
 
     private Cliente getCliente(Integer id) {
         return clienteRepository.findById(id)
-            .orElseThrow(
-                () -> new ObjectNotFoundException("Cliente " + id + " não encontrado!")
-            );
+                .orElseThrow(
+                        () -> new ObjectNotFoundException("Cliente " + id + " não encontrado!"));
     }
 }

@@ -1,6 +1,7 @@
 package com.loja.demo.services.municipio;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -47,38 +48,6 @@ public class MunicipioServices extends GeneralService {
         }
     }
 
-    public ResponseEntity<?> findMunicipioByName(String name) {
-        try {
-            List<Municipio> municipios = municipioRepository.findMunicipioByName(name);
-
-            if (municipios.isEmpty()) {
-                throw new ObjectNotFoundException("Município " + name + " não encontrado!");
-            }
-            return ResponseEntity.status(HttpStatusCode.OK.getCode()).body(municipios);
-        } catch (ObjectNotFoundException notFound) {
-            return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
-        }
-    }
-
-    public ResponseEntity<?> findMunicipioByUF(String uf) {
-        try {
-            List<Municipio> municipios = municipioRepository.findMunicipioByUF(uf);
-
-            if (municipios.isEmpty()) {
-                throw new ObjectNotFoundException("Unidade Federativa " + uf + " não encontrado!");
-            }
-            return ResponseEntity.status(HttpStatusCode.OK.getCode()).body(municipios);
-        } catch (ObjectNotFoundException notFound) {
-            return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
-        }
-    }
-
     public ResponseEntity<?> insertMunicipio(Municipio municipio) {
         try {
             municipio.setCd_munipio(null);
@@ -106,53 +75,25 @@ public class MunicipioServices extends GeneralService {
         }
     }
 
-    public ResponseEntity<?> updateMunicipio(Integer id, Municipio municipio) {
+    public ResponseEntity<?> updateMunicipio(Integer id, Map<String, Object> municipio) {
         try {
-            Municipio municipioUpdated = this.findMunicipio(id);
+            final Municipio municipioUpdated = this.findMunicipio(id);
 
-            municipioUpdated.setNm_municipio(municipio.getNm_municipio());
-            municipioUpdated.setSg_uf(municipio.getSg_uf());
+            municipio.forEach((campo, valor) -> {
+                switch (campo) {
+                    case "nm_municipio":
+                        municipioUpdated.setNm_municipio((String) valor);
+                        break;
+                    case "sg_uf":
+                        municipioUpdated.setSg_uf((String) valor);
+                        break;
+                }
+            });
 
-            municipioUpdated = municipioRepository.save(municipioUpdated);
+            municipioRepository.save(municipioUpdated);
             return ResponseEntity.status(HttpStatusCode.CREATED.getCode())
                 .headers(this.getHeaders(id))
                 .body(municipioUpdated);
-        } catch (ObjectNotFoundException notFound) {
-            return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
-        }
-    }
-
-    public ResponseEntity<?> updateMunicipioName(Integer id, String name) {
-        try {
-            Municipio municipio = this.findMunicipio(id);
-
-            municipio.setNm_municipio(name);
-
-            municipio = municipioRepository.save(municipio);
-            return ResponseEntity.status(HttpStatusCode.CREATED.getCode())
-                .headers(this.getHeaders(id))
-                .body(municipio);
-        } catch (ObjectNotFoundException notFound) {
-            return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
-        }
-    }
-
-    public ResponseEntity<?> updateMunicipioUF(Integer id, String uf) {
-        try {
-            Municipio municipio = this.findMunicipio(id);
-
-            municipio.setSg_uf(uf);
-
-            municipio = municipioRepository.save(municipio);
-            return ResponseEntity.status(HttpStatusCode.CREATED.getCode())
-                .headers(this.getHeaders(id))
-                .body(municipio);
         } catch (ObjectNotFoundException notFound) {
             return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
                 .body(notFound.getMessage());

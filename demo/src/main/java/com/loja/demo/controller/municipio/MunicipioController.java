@@ -1,5 +1,7 @@
 package com.loja.demo.controller.municipio;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,16 +36,6 @@ public class MunicipioController extends GeneralController {
         return municipioServices.findById(id);
     }
 
-    @GetMapping("/name/{name}")
-    public ResponseEntity<?> findMunicipioByName(@PathVariable String name) {
-        return municipioServices.findMunicipioByName(name);
-    }
-
-    @GetMapping("/uf/{uf}")
-    public ResponseEntity<?> findMunicipioByUF(@PathVariable String uf) {
-        return municipioServices.findMunicipioByUF(uf);
-    }
-
     @PostMapping()
     public ResponseEntity<?> insertMunicipio(@Valid @RequestBody Municipio municipio) {
         return municipioServices.insertMunicipio(municipio);
@@ -55,17 +47,7 @@ public class MunicipioController extends GeneralController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateMunicipio(@PathVariable Integer id, @Valid @RequestBody Municipio municipio) {
+    public ResponseEntity<?> updateMunicipio(@PathVariable Integer id, @Valid @RequestBody Map<String, Object> municipio) {
         return municipioServices.updateMunicipio(id, municipio);
-    }
-
-    @PutMapping("/{id}/name/{name}")
-    public ResponseEntity<?> updateMunicipioName(@PathVariable Integer id, @PathVariable String name) {
-        return municipioServices.updateMunicipioName(id, name);
-    }
-
-    @PutMapping("/{id}/uf/{uf}")
-    public ResponseEntity<?> updateMunicipioUF(@PathVariable Integer id, @PathVariable String uf) {
-        return municipioServices.updateMunicipioUF(id, uf);
     }
 }

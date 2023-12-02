@@ -53,22 +53,6 @@ public class ProdutoServices extends GeneralService {
         }
     }
 
-    public ResponseEntity<?> findByName(String name) {
-        try {
-            List<Produto> produtos = produtoRepository.findByName(name);
-
-            if (produtos.isEmpty()) {
-                throw new ObjectNotFoundException("Produto " + name + " não encontrado");
-            }
-            return ResponseEntity.status(HttpStatusCode.OK.getCode()).body(produtos);
-        } catch (ObjectNotFoundException notFound) {
-            return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
-                .body(notFound.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatusCode.BAD_REQUEST.getCode()).build();
-        }
-    }
-
     public ResponseEntity<?> insertProduto(Map<String, Object> produto) {
         try {
             Produto newProduto = new Produto();
