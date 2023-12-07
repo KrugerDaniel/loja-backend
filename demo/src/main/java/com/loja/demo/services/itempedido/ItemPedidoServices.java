@@ -118,7 +118,7 @@ public class ItemPedidoServices extends GeneralService {
 
             return ResponseEntity.status(HttpStatusCode.CREATED.getCode())
                 .headers(this.getHeaders(itemPedidoID))
-                .body(pedido);
+                .body(newItem);
         } catch (ObjectNotFoundException notFound) {
             return ResponseEntity.status(HttpStatusCode.NOT_FOUND.getCode())
                 .body(notFound.getMessage());
